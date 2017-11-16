@@ -16,8 +16,7 @@ def permNum(s):
             prod *= count_dic[i]
 
         indexOfFirst = ss.index(s[0])
-        permutations = math.factorial(len(s)) / prod
+        permutations = math.factorial(len(s)) / (prod * indexOfFirst)
         return (permutations/len(s) * indexOfFirst) + permNum(s[1:])
 
 print(permNum('bacaa'))
-        

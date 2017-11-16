@@ -18,41 +18,45 @@ def sortedInsertR(t, array, l, h):
     else:
         return sortedInsertR(t, array, m + 1, h)
 
-def update(array, w, h, squaresurface, blanksurface, screen, l):
+def update(array, w, h, squaresurface, blanksurface, screen, l, a):
     l2 = []
-    tempArray = [[0 for x in range(w)] for y in range(h)]
     print(len(l))
     c = 0
+    b = (a + 1) % 2
+    for i in range(w):
+        for j in range(h):
+            array[i][j][b] = 0
+
 
     while(len(l) > 0):
         i, j = l.pop(0)
-        counter = array[i][j] * -1
-        if array[i][j] == 1:
+        counter = array[i][j][a] * -1
+        if array[i][j][a] == 1:
             c += 1
         for x in range(-1, 2):
             for y in range(-1, 2):
-                counter += array[(i + x) % w][(j + y) % h]
+                counter += array[(i + x) % w][(j + y) % h][a]
                 if len(l2) == 0:
                     l2.append(((i + x) % w, (j + y) % h))
-                if array[i][j] == 1:
+                if array[i][j][a] == 1:
                     sortedInsert(((i + x) % w, (j + y) % h), l2)
 
-        if array[i][j] == 1:
+        if array[i][j][a] == 1:
             if counter < 2:
-                tempArray[i][j] = 0
+                array[i][j][b] = 0
                 screen.blit(blanksurface, (i * 5, j * 5))
             elif counter > 3:
-                tempArray[i][j] = 0
+                array[i][j][b] = 0
                 screen.blit(blanksurface, (i * 5, j * 5))
             else:
-                tempArray[i][j] = 1
+                array[i][j][b] = 1
         else:
             if counter == 3:
-                tempArray[i][j] = 1
+                array[i][j][b] = 1
                 screen.blit(squaresurface, (i * 5, j * 5))
 
     print('c: ' + str(c))
-    return tempArray, l2
+    l.extend(l2)
 
 def main():
 
@@ -61,11 +65,11 @@ def main():
 
     l = []
 
-    cells = [[0 for x in range(w)] for y in range(h)]
+    cells = [[[0, 0] for x in range(w)] for y in range(h)]
     for i in range(w):
         for j in range(h):
             num = random.randrange(2)
-            cells[i][j] = num
+            cells[i][j][0] = num
             if num == 1:
                 l.append((i, j))
     l.sort()
@@ -93,6 +97,7 @@ def main():
     blanksurface.fill((255, 255, 255))
 
     run = True
+    a = 0
     while run > 0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -100,7 +105,8 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     run = False
-        cells, l = update(cells, w, h, squaresurface, blanksurface, screen, l)
+        update(cells, w, h, squaresurface, blanksurface, screen, l, a)
+        a = (a + 1) % 2
         pygame.display.flip()
     pygame.quit()
 
