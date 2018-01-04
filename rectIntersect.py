@@ -26,7 +26,6 @@ def sort(a):
         if a[i][1] < ymin:
             ymin = i
 
-
     b = a[ymax]
     l.append(b)
     a.remove(b)

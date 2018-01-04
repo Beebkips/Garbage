@@ -6,11 +6,12 @@ class n(object):
         self.x = x
         self.y = y
         self.s = s
-        # self.h = self.s - self.x - self.y
-        self.h = self.x + self.y
-        c = int(255 * ((self.y + self.x)/1000))
+        self.h = (self.s - self.x - self.y) #* -1
+        self.h = self.s
+        # self.h = self.x + self.y
+        c = int(255 * ((self.y + self.x)/500)) 
         self.color = (255 - c, c, 0)
-        # self.color = (255 - self.s, self.s, 0)
+        # self.color = ((self.s/2) % 255, (255 - self.s/2) % 255, 0)
 
     def __cmp__(self, other):
         if other.h > self.h:
@@ -38,11 +39,11 @@ def sortedInsertR(t, array, l, h):
     else:
         return sortedInsertR(t, array, m + 1, h)
 
-W = 500
-H = 500
+W = 250
+H = 250
 
-w = 1
-h = 1
+w = 2
+h = 2
 
 pygame.init()
 
@@ -165,6 +166,7 @@ def mazeSolver(maze):
     check = True
     l.append(n(1, 1, 0))
     while(len(l) != 0 and check):
+        t = []
         cur = l.pop()
         mc.fill(cur.color)
         screen.blit(mc, (cur.x * w, cur.y * h))
@@ -180,9 +182,12 @@ def mazeSolver(maze):
             l.append(n(cur.x, cur.y - 1, cur.s + 1))
         if cur.y + 1 < H and sortedInsert((cur.x, cur.y + 1), vs) != -1 and maze[cur.x][cur.y + 1] == 1:
             l.append(n(cur.x, cur.y + 1, cur.s + 1))
+        # for node in t:
+        #     if node.h + 10 > cur.h:
+        #         l.append(node)
         if len(l) == 0:
             check = False
-    l = sorted(l, key = lambda x: (x.h, x.x, x.y), reverse=False)
+        l = sorted(l, key = lambda x: (x.h, x.x, x.y), reverse=True)
 
 mazeSolver(cells)
 
