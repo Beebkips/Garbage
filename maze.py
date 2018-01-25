@@ -6,7 +6,7 @@ class n(object):
         self.x = x
         self.y = y
         self.s = s
-        self.h = (self.s - self.x - self.y) #* -1
+        self.h = (self.s * 2 - self.x - self.y) * -1
         self.h = self.s
         # self.h = self.x + self.y
         c = int(255 * ((self.y + self.x)/500)) 
@@ -89,7 +89,7 @@ def addWalls(cell, cells, walls):
         walls.append((cell[0] + 1, cell[1]))
     if cell[1] - 1 > 0 and cells[cell[0]][cell[1] - 1] == 0 and sortedInsert((cell[0], cell[1] - 1), vs) != -1:
         walls.append((cell[0], cell[1] - 1))
-    if cell[1] + 1 < W - 1 and cells[cell[0]][cell[1] + 1] == 0 and sortedInsert((cell[0], cell[1] + 1), vs) != -1:
+    if cell[1] + 1 < H - 1 and cells[cell[0]][cell[1] + 1] == 0 and sortedInsert((cell[0], cell[1] + 1), vs) != -1:
         walls.append((cell[0], cell[1] + 1))
 
 def checkWall(wall, cells, walls):
@@ -187,7 +187,7 @@ def mazeSolver(maze):
         #         l.append(node)
         if len(l) == 0:
             check = False
-        l = sorted(l, key = lambda x: (x.h, x.x, x.y), reverse=True)
+        l = sorted(l, key = lambda x: (x.h, x.x, x.y), reverse=False)
 
 mazeSolver(cells)
 
