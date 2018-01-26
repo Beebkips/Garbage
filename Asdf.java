@@ -1,4 +1,5 @@
 public class Asdf {
+    public static final int THIS_IS_SPECIAL = 0;
     String myString = "This is my string";
     int myField;
 
