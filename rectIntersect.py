@@ -1,44 +1,8 @@
 import pygame, random, time
 
-def sort(a):
-    l = []
-    xmin = 300
-    xmax = 0
-    for i in range(4):
-        if a[i][0] > xmax:
-            xmax = i
-        if a[i][0] < xmin:
-            xmin = i
+def intersect(p1, p2):
+    return (p1[0] < p2[2] and p1[2] > p2[0] and p1[1] > p2[3] and p1[3] < p2[1])
 
-    b = a[xmax]
-    l.append(b)
-    a.remove(b)
-
-    b = a[xmin]
-    l.append(b)
-    a.remove(b)
-
-    ymin = 300
-    ymax = 0
-    for i in range(2):
-        if a[i][1] > ymax:
-            ymax = i
-        if a[i][1] < ymin:
-            ymin = i
-
-    b = a[ymax]
-    l.append(b)
-    a.remove(b)
-
-    b = a[ymin]
-    l.append(b)
-    a.remove(b)
-
-    # print(xmin, ymin, xmax, ymax)
-    return l
-
-def randomPoly():
-    pass
 def main():
 
     w = 250
@@ -61,41 +25,35 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     run = False
-        screen.blit(background, (0,0))
+
         p1 = []
+        p1.append(random.randrange(w//2))
+        p1.append(random.randrange(h//2))
+        p1.append(random.randrange(p1[0], w))
+        p1.append(random.randrange(p1[1], h))
+
         p2 = []
-        for i in range(4):
-            do = True
-            while do:
-                x = random.randrange(10)
-                y = random.randrange(10)
-                if (x * 25, y * 25) not in p1:
-                    do = False
-                    p1.append((x * 25,y * 25))
+        p2.append(random.randrange(w//2))
+        p2.append(random.randrange(h//2))
+        p2.append(random.randrange(p2[0], w))
+        p2.append(random.randrange(p2[1], h))
 
+        rect1 = pygame.Surface((p1[2] - p1[0], p1[3] - p1[1]))
+        rect1.fill((255, 0, 0))
+        rect2 = pygame.Surface((p2[2] - p2[0], p2[3] - p2[1]))
+        rect2.fill((0, 0, 255))
 
-        for i in range(4):
-            do = True
-            while do:
-                x = random.randrange(10)
-                y = random.randrange(10)
-                if (x,y) not in p2:
-                    do = False
-                    p2.append((x * 25,y * 25))
+        if intersect(p1, p2):
+            background.fill((255, 200, 200))
+        else:
+            background.fill((200, 255, 200))
 
-        p1 = sort(p1)
-        p2 = sort(p2)
-        print(p1, p2)
-        pygame.draw.polygon(screen, (0, 0, 255), p1, 1)
-        pygame.draw.polygon(screen, (255, 0, 0), p2, 1)
-        p3 = p1.extend(p2)
-        # p3 = sort(p3)
-
+        screen.blit(background, (0,0))
+        screen.blit(rect1, (p1[0], p1[1]))
+        screen.blit(rect2, (p2[0], p2[1]))
         pygame.display.flip()
         time.sleep(0.1)
     pygame.quit()
 
 if __name__ == '__main__':
     main()
-
-pygame.draw.polygon()

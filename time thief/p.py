@@ -15,7 +15,7 @@ import requests
 
 # out = []
 # for sec in l:
-#     call = requests.get('https://www.washington.edu/students/timeschd/T/WIN2018/' + sec + '.html')
+#     call = requests.get('https://www.washington.edu/students/timeschd/T/SPR2018/' + sec + '.html')
 #     # print(call.text)
 #     call = call.text.split('\n')
 #     for w in call:
@@ -34,6 +34,7 @@ with open('out.txt') as f:
 read_data = read_data.split('\n')
 f = []
 for a in read_data:
+    print('>' + a)
     temp = a.replace('><A', '<A')
     temp = temp.split(' ')
     temp = temp[temp.index('<A'):]
